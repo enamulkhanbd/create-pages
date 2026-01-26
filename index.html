@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Create Pages - Figma Plugin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f6f2ec;
+      --surface: #fffaf4;
+      --ink: #1b1b1b;
+      --muted: #5b5b5b;
+      --accent: #d8612b;
+      --accent-2: #0e6b67;
+      --border: #e5dacd;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+      --radius: 16px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "IBM Plex Sans", sans-serif;
+      color: var(--ink);
+      background: radial-gradient(circle at top left, #fef3e3 0%, #f6f2ec 45%, #eef3f2 100%);
+    }
+
+    .wrap {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 32px 20px 80px;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 12px 0 40px;
+    }
+
+    .brand {
+      font-family: "Space Grotesk", sans-serif;
+      font-weight: 700;
+      letter-spacing: 0.4px;
+      font-size: 20px;
+    }
+
+    nav {
+      display: flex;
+      gap: 18px;
+      font-size: 14px;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: var(--muted);
+    }
+
+    nav a:hover {
+      color: var(--ink);
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 32px;
+      align-items: center;
+      margin-bottom: 56px;
+    }
+
+    .hero-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 32px;
+    }
+
+    .hero h1 {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: clamp(32px, 4vw, 52px);
+      margin: 0 0 12px;
+    }
+
+    .hero p {
+      font-size: 18px;
+      line-height: 1.5;
+      margin: 0 0 22px;
+      color: var(--muted);
+    }
+
+    .cta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 18px;
+      border-radius: 999px;
+      border: 1px solid var(--ink);
+      font-weight: 600;
+      font-family: "Space Grotesk", sans-serif;
+      text-decoration: none;
+      color: var(--ink);
+      background: #fff;
+    }
+
+    .btn.primary {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+
+    .badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .badge {
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 6px 12px;
+      font-size: 13px;
+      background: #fff;
+    }
+
+    .section {
+      margin-top: 64px;
+    }
+
+    .section h2 {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 28px;
+      margin: 0 0 18px;
+    }
+
+    .grid {
+      display: grid;
+      gap: 20px;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    }
+
+    .card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
+    }
+
+    .card h3 {
+      font-family: "Space Grotesk", sans-serif;
+      margin: 0 0 10px;
+      font-size: 18px;
+    }
+
+    .card ul {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .callout {
+      border-left: 4px solid var(--accent-2);
+      background: #f0f7f6;
+      padding: 16px 18px;
+      border-radius: 12px;
+      color: #13524f;
+    }
+
+    .steps {
+      display: grid;
+      gap: 16px;
+    }
+
+    .step {
+      display: grid;
+      grid-template-columns: 40px 1fr;
+      gap: 12px;
+      align-items: start;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px;
+    }
+
+    .step span {
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      background: var(--accent-2);
+      color: #fff;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+    }
+
+    .two-col {
+      display: grid;
+      gap: 20px;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    }
+
+    footer {
+      margin-top: 80px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    @media (max-width: 700px) {
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      nav {
+        flex-wrap: wrap;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand">Create Pages</div>
+      <nav>
+        <a href="#features">Features</a>
+        <a href="#templates">Templates</a>
+        <a href="#install">Use in Figma</a>
+        <a href="#dev">Development</a>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <div>
+        <h1>Build a clean Figma file structure in one click.</h1>
+        <p>Create Pages is a Figma plugin that generates consistent page structures for design, feedback, and handoff workflows. Select a template and instantly organize your file.</p>
+        <div class="cta">
+          <a class="btn primary" href="#install">Install in Figma</a>
+          <a class="btn" href="#templates">View Templates</a>
+        </div>
+        <div class="badges">
+          <div class="badge">Offline ready</div>
+          <div class="badge">No build step</div>
+          <div class="badge">5 page templates</div>
+          <div class="badge">Figma files only</div>
+        </div>
+      </div>
+      <div class="hero-card">
+        <h2>What it does</h2>
+        <p>Choose a workflow and Create Pages will rename your first page to Cover, remove all other pages, and build the new page set automatically.</p>
+        <div class="callout">
+          Running the plugin resets the file structure. Use it on a fresh file or make a backup first.
+        </div>
+      </div>
+    </section>
+
+    <section id="features" class="section">
+      <h2>Features</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>One-click templates</h3>
+          <p>Pick from Design Web, Design App, Feedback, Dev Web, or Dev App templates.</p>
+        </div>
+        <div class="card">
+          <h3>Consistent structure</h3>
+          <p>Standardizes page order with separators so teams start every project the same way.</p>
+        </div>
+        <div class="card">
+          <h3>Simple UI</h3>
+          <p>Clear card-based selection with one primary action.</p>
+        </div>
+        <div class="card">
+          <h3>No dependencies</h3>
+          <p>Runs entirely offline with plain HTML, CSS, and JavaScript.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="templates" class="section">
+      <h2>Page Templates</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>Design Web</h3>
+          <ul>
+            <li>Cover</li>
+            <li>-----</li>
+            <li>Mood-board</li>
+            <li>Information Architecture</li>
+            <li>User Flow</li>
+            <li>-----</li>
+            <li>Wireframe</li>
+            <li>-----</li>
+            <li>Draft</li>
+            <li>Web UI</li>
+            <li>Responsive UI</li>
+            <li>-----</li>
+            <li>Prototyping Web</li>
+            <li>Prototyping Responsive</li>
+            <li>-----</li>
+            <li>Archive</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Design App</h3>
+          <ul>
+            <li>Cover</li>
+            <li>-----</li>
+            <li>User Research</li>
+            <li>Persona</li>
+            <li>User Flow</li>
+            <li>-----</li>
+            <li>Wireframe - Mobile</li>
+            <li>Wireframe - Tablet</li>
+            <li>-----</li>
+            <li>UI Design</li>
+            <li>Dark Mode</li>
+            <li>-----</li>
+            <li>Prototyping</li>
+            <li>-----</li>
+            <li>Archive</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Feedback</h3>
+          <ul>
+            <li>Cover</li>
+            <li>-----</li>
+            <li>Web UI</li>
+            <li>-----</li>
+            <li>Archive</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Dev Web</h3>
+          <ul>
+            <li>Cover</li>
+            <li>-----</li>
+            <li>Web UI (prefixed with laptop emoji in the current code)</li>
+            <li>Responsive UI (prefixed with phone emoji in the current code)</li>
+            <li>-----</li>
+            <li>Prototyping Web</li>
+            <li>Prototyping Responsive</li>
+            <li>-----</li>
+            <li>Archive</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Dev App</h3>
+          <ul>
+            <li>Cover</li>
+            <li>-----</li>
+            <li>Mobile UI - Light</li>
+            <li>Mobile UI - Dark</li>
+            <li>-----</li>
+            <li>Tablet UI - Light</li>
+            <li>Tablet UI - Dark</li>
+            <li>-----</li>
+            <li>Prototyping</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="install" class="section">
+      <h2>How to Use in Figma</h2>
+      <div class="steps">
+        <div class="step"><span>1</span><div>Open the Figma desktop app.</div></div>
+        <div class="step"><span>2</span><div>Go to Plugins &gt; Development &gt; Import plugin from manifest.</div></div>
+        <div class="step"><span>3</span><div>Select the <strong>manifest.json</strong> file from this repo.</div></div>
+        <div class="step"><span>4</span><div>Run the plugin from Plugins &gt; Development &gt; Create Pages.</div></div>
+        <div class="step"><span>5</span><div>Select a template and click Create Pages.</div></div>
+      </div>
+    </section>
+
+    <section id="dev" class="section">
+      <h2>Start Development</h2>
+      <div class="two-col">
+        <div class="card">
+          <h3>Requirements</h3>
+          <ul>
+            <li>Figma desktop app</li>
+            <li>No build step or dependencies</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Workflow</h3>
+          <ul>
+            <li>Clone or download this repo</li>
+            <li>Edit <strong>code.js</strong> and <strong>ui.html</strong></li>
+            <li>Reload the plugin in Figma to see changes</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Project Structure</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>manifest.json</h3>
+          <p>Plugin metadata, permissions, and entry points.</p>
+        </div>
+        <div class="card">
+          <h3>code.js</h3>
+          <p>Creates pages and handles UI messages.</p>
+        </div>
+        <div class="card">
+          <h3>ui.html</h3>
+          <p>Plugin interface and styling.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Notes</h2>
+      <div class="callout">
+        Document access is set to dynamic-page, and the plugin only runs in Figma files (not FigJam).
+        The Dev Web template currently includes emoji prefixes in page names. Update <strong>code.js</strong> if you want plain text names.
+      </div>
+    </section>
+
+    <footer>
+      Built for consistent Figma files and faster project kickoffs.
+    </footer>
+  </div>
+</body>
+</html>
