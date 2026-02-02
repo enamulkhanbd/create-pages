@@ -1,15 +1,15 @@
 # Create Pages
 
-Create Pages is a Figma plugin that builds a clean, standardized page structure for common design and handoff workflows in one click.
+Create Pages is a lightweight Figma plugin that replaces whatever pages exist in the current document with a clean, opinionated structure for common design and handoff workflows. It renames the first page to **Cover**, removes every other page, and then recreates the selected template's sequence of steps with separators (`-----`) where they belong.
 
-## Features
-- One-click page templates for Design Web, Design App, Feedback, Dev Web, and Dev App workflows.
-- Resets the current file to a consistent structure (renames the first page to `Cover`, removes all other pages, then creates the new set).
-- Simple UI with selectable cards and a single "Create Pages" action.
-- Works fully offline (no network access, no external dependencies).
+## Key Features
+- Five curated page templates for Design Web, Design App, Feedback, Dev Web, and Dev App workflows so teams always start with the right structure.
+- Clears the file by renaming the first page, deleting every other page, and creating the new page set in the exact order defined in `code.js`.
+- Offline UI: everything runs from `ui.html` and `code.js`, and the manifest explicitly forbids network access (`"allowedDomains": ["none"]`) while granting `dynamic-page` document access.
+- Friendly UX that prevents creation until a template is selected and surfaces success or error notifications inside Figma.
 
-## Page Sets
-Each template creates pages in this exact order. Pages named `-----` are simple separators.
+## Template page sets
+Page names are created in the order listed below; separators (`-----`) keep long sections readable.
 
 ### Design Web
 - Cover
@@ -56,8 +56,8 @@ Each template creates pages in this exact order. Pages named `-----` are simple 
 ### Dev Web
 - Cover
 - -----
-- Web UI (prefixed with laptop emoji in the current code)
-- Responsive UI (prefixed with phone emoji in the current code)
+- Web UI (prefixed with a laptop emoji)
+- Responsive UI (prefixed with a phone emoji)
 - -----
 - Prototyping Web
 - Prototyping Responsive
@@ -75,31 +75,30 @@ Each template creates pages in this exact order. Pages named `-----` are simple 
 - -----
 - Prototyping
 
-## How to Use in Figma
-1. Open the Figma desktop app.
-2. Go to `Plugins` > `Development` > `Import plugin from manifest...`.
-3. Select `manifest.json` from this repo.
-4. Run the plugin from `Plugins` > `Development` > `Create Pages`.
-5. Select a template and click **Create Pages**.
+## Installation
+1. Open the Figma desktop app (plugin development only works on desktop).
+2. Use **Plugins > Development > Import plugin from manifest...** and point to this repo's `manifest.json` file.
+3. Run the plugin from **Plugins > Development > Create Pages**.
 
-Note: Running the plugin will remove all existing pages except the first, which is renamed to `Cover`.
+## Plugin workflow
+- The UI defined in `ui.html` renders five cards with inline SVG icons, tracks the selected design type, and enables the **Create Pages** button only after a card is chosen.
+- Clicking **Create Pages** sends a `create-page` message to `code.js`. The script renames the first page to Cover, removes the rest, creates the template's pages, shows a success notification, and closes the plugin.
+- If no template is selected, the UI posts an `error` message so `code.js` can show a reminder notification.
+- The **Cancel** button only closes the plugin and leaves the file untouched.
 
-## Start Development
-Requirements:
-- Figma desktop app (plugin development is only supported in the desktop app).
-- No build step or dependencies; this plugin uses plain HTML/CSS/JS.
+## Development
+- Requirements: Figma desktop app and a text editor. There is no build step or package manager; editing `code.js` and `ui.html` is enough.
+- Typical cycle:
+  1. Make edits to `code.js` (template logic, cleanup) or `ui.html` (layout, styling, event handling).
+  2. Inside Figma, choose **Plugins > Development > Reload** to refresh the plugin bundle.
+  3. Run the plugin, choose a template card, and confirm the resulting pages match the desired sequence.
 
-Steps:
-1. Clone or download this repo.
-2. In Figma, import the plugin via `manifest.json` (see steps above).
-3. Edit `code.js` (plugin logic) and `ui.html` (UI layout and styles).
-4. In Figma, use `Plugins` > `Development` > `Reload` to pick up changes.
-
-## Project Structure
-- `manifest.json` - Figma plugin manifest and permissions.
-- `code.js` - Plugin logic (creates pages and handles messages).
-- `ui.html` - Plugin UI (cards, buttons, styles).
+## Project layout
+- `manifest.json`: declares `api: 1.0.0`, the main script (`code.js`), the UI bundle (`ui.html`), `dynamic-page` access, and zero network permissions.
+- `code.js`: handles messages, resets existing pages, creates the selected template, and posts notifications.
+- `ui.html`: renders the card grid, wires the buttons, and posts `create-page` / `cancel` messages to the controller.
+- `.github/`: houses any workflow definitions (not modified here but part of the repository).
 
 ## Notes
-- Document access is `dynamic-page`, and the plugin is limited to Figma files (not FigJam).
-- The current Dev Web template includes emoji prefixes in page names; adjust in `code.js` if you want plain text names.
+- The Dev Web template keeps emoji prefixes on Web UI and Responsive UI; change those strings in `code.js` if you prefer plain text names.
+- Since the plugin removes every page except Cover, run it only when you intend to start fresh. Figma's undo stack still preserves the previous pages until you close the file.
